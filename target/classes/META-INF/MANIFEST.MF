@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: Conference creator
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Student221713
+Implementation-Vendor-Id: afi
+Build-Jdk: 1.8.0_181
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/conference-creator
+Created-By: Maven Integration for Eclipse
+Main-Class: com.afi.ConferenceCreatorApplication
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<include
+		resource="org/springframework/boot/logging/logback/base.xml" />
+	<timestamp key="daily" datePattern="dd.MM.yyyy" />
+
+	<springProfile name="!prod">
+		<!-- dev -->
+
+		<appender name="INFO_LOG"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>logs/log-${daily}.log</file>
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>logs/bb.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+				<maxHistory>30</maxHistory>
+			</rollingPolicy>
+			<encoder>
+				<charset>UTF-8</charset>
+				<Pattern>[%-5level][%d{yyyy-MM-dd HH:mm:ss.SSS}][%marker] %class -
+					%msg%n
+				</Pattern>
+			</encoder>
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+				<level>DEBUG</level>
+			</filter>
+		</appender>
+
+		<logger name="com.afi" level="info" />
+
+		<root level="INFO">
+			<appender-ref ref="INFO_LOG" />
+		</root>
+	</springProfile>
+
+	<springProfile name="prod">
+
+
+		<appender name="INFO_LOG"
+			class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>/var/www5/race/logs/log-${daily}.log</file>
+			<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>logs/bb.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+				<maxHistory>30</maxHistory>
+			</rollingPolicy>
+			<encoder>
+				<charset>UTF-8</charset>
+				<Pattern>[%-5level][%d{yyyy-MM-dd HH:mm:ss.SSS}][%marker] %class -
+					%msg%n
+				</Pattern>
+			</encoder>
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+				<level>DEBUG</level>
+			</filter>
+		</appender>
+
+		<logger name="com.afi" level="info" />
+
+		<root level="INFO">
+			<appender-ref ref="INFO_LOG" />
+		</root>
+	</springProfile>
+
+
+
+</configuration>
