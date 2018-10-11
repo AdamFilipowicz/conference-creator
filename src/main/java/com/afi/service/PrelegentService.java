@@ -1,9 +1,8 @@
 package com.afi.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.afi.model.Prelegent;
@@ -16,12 +15,8 @@ public class PrelegentService {
 
     public PrelegentService() {}
     
-    public List<Prelegent> findAll(){
-    	List<Prelegent> prelList = prelegentRepository.findAll();
-    	if(prelList.isEmpty()) {
-    		return new ArrayList<Prelegent>();
-    	}
-    	return prelList;
+    public Page<Prelegent> findAll(Pageable pageable){
+    	return prelegentRepository.findAll(pageable);
     }
 
     public Prelegent findPrelegentByName(String name) {

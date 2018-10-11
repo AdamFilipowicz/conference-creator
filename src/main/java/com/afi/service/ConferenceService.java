@@ -1,9 +1,8 @@
 package com.afi.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.afi.model.Conference;
@@ -17,12 +16,8 @@ public class ConferenceService {
 
     public ConferenceService() {}
     
-    public List<Conference> findAll(){
-    	List<Conference> confList = conferenceRepository.findAll();
-    	if(confList.isEmpty()) {
-    		return new ArrayList<Conference>();
-    	}
-    	return confList;
+    public Page<Conference> findAll(Pageable pageable){
+    	return conferenceRepository.findAll(pageable);
     }
 
     public Conference findConferenceByName(String name) {

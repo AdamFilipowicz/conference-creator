@@ -2,14 +2,16 @@ package com.afi.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.afi.dto.TableConference;
 import com.afi.mapper.ConferenceMapper;
 import com.afi.model.Prelegent;
+import com.afi.tools.Pager;
 
 @Service
 public class NamingService {
@@ -45,23 +47,26 @@ public class NamingService {
 		}
 	}
 
-	public List<Object> findAll(Object object, int tableLength) {
+	public Pager findAll(Object object, Pager pager, int tableLength, int buttonsToShow, Pageable pageable) {
 		if (object instanceof TableConference) {
-			List<TableConference> tableList = conferenceService.findAll().stream().map(conferenceMapper::toTableConference)
-					.collect(Collectors.toList());
-			List<Object> list = !tableList.isEmpty() ? new ArrayList<Object>(tableList) : new ArrayList<Object>();
+			Page<TableConference> tablePage = conferenceService.findAll(pageable).map(conferenceMapper::toTableConference);
+			List<Object> list = !tablePage.getContent().isEmpty() ? new ArrayList<Object>(tablePage.getContent()) : new ArrayList<Object>();
 			if(tableLength > list.size()) {
 				list.add(new TableConference());
 			}
-			return list;
-		} 
+			pager = new Pager(list, tablePage.getTotalPages(), tablePage.getNumber(), buttonsToShow);
+			pager.setTotalPages(tablePage.getTotalPages());
+			return pager;
+		}
 		else if (object instanceof Prelegent) {
-			List<Prelegent> tableList = prelegentService.findAll();
-			List<Object> list = !tableList.isEmpty() ? new ArrayList<Object>(tableList) : new ArrayList<Object>();
+			Page<Prelegent> tablePage = prelegentService.findAll(pageable);
+			List<Object> list = !tablePage.getContent().isEmpty() ? new ArrayList<Object>(tablePage.getContent()) : new ArrayList<Object>();
 			if(tableLength > list.size()) {
 				list.add(new Prelegent());
 			}
-			return list;
+			pager = new Pager(list, tablePage.getTotalPages(), tablePage.getNumber(), buttonsToShow);
+			pager.setTotalPages(tablePage.getTotalPages());
+			return pager;
 		}
 		return null;
 	}
