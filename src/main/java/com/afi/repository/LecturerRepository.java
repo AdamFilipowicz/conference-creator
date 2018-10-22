@@ -8,17 +8,17 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.afi.model.Conference;
-import com.afi.model.Prelegent;
+import com.afi.model.Lecturer;
 
 import java.util.List;
 
 @Repository
-public interface PrelegentRepository extends JpaRepository<Prelegent, Long>, PagingAndSortingRepository<Prelegent, Long> {
+public interface LecturerRepository extends JpaRepository<Lecturer, Long>, PagingAndSortingRepository<Lecturer, Long> {
     long count();
 
-    List<Prelegent> findAll();
+    List<Lecturer> findAll();
     
-    Page<Prelegent> findAllByConferenceOrderById(Conference conference, Pageable pageable);
+    Page<Lecturer> findAllByConferenceOrderById(Conference conference, Pageable pageable);
     
-    Prelegent findByName(String name);
+    Lecturer findByName(String name);
 }

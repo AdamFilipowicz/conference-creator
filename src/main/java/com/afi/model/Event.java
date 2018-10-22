@@ -1,5 +1,7 @@
 package com.afi.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +17,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "conf_prelegent")
-public class Prelegent {
+public class Event {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,21 +28,25 @@ public class Prelegent {
 	@NotBlank
 	private String name;
 	
-	@NotNull
-	@NotBlank
-	private String surname;
-	
-	private int age;
+	private int type;
 	
 	@NotNull
-	@Column(name = "average_grade")
-	private float averageGrade;
+	@Column(name = "event_time")
+	private Timestamp eventTime;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "lecturer_id")
+	private Lecturer lecturer;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "prelegent_id")
+	private Prelegent prelegent;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "conference_id")
 	private Conference conference;
 
-	public Prelegent() {}
+	public Event() {}
 	
 	public long getId() {
 		return id;
@@ -50,13 +56,12 @@ public class Prelegent {
 		this.id = id;
 	}
 	
-	public Prelegent(@NotNull @NotBlank String name, @NotNull @NotBlank String surname, int age,
-			@NotNull float averageGrade) {
+	public Event(@NotNull @NotBlank String name, int type, @NotNull Timestamp eventTime) {
 		this.name = name;
-		this.surname = surname;
-		this.age = age;
-		this.averageGrade = averageGrade;
+		this.type = type;
+		this.eventTime = eventTime;
 	}
+	
 
 	public String getName() {
 		return name;
@@ -66,28 +71,36 @@ public class Prelegent {
 		this.name = name;
 	}
 
-	public String getSurname() {
-		return surname;
+	public int getType() {
+		return type;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setType(int type) {
+		this.type = type;
 	}
 
-	public int getAge() {
-		return age;
+	public Timestamp getEventTime() {
+		return eventTime;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setEventTime(Timestamp eventTime) {
+		this.eventTime = eventTime;
 	}
 
-	public float getAverageGrade() {
-		return averageGrade;
+	public Lecturer getLecturer() {
+		return lecturer;
 	}
 
-	public void setAverageGrade(float averageGrade) {
-		this.averageGrade = averageGrade;
+	public void setLecturer(Lecturer lecturer) {
+		this.lecturer = lecturer;
+	}
+
+	public Prelegent getPrelegent() {
+		return prelegent;
+	}
+
+	public void setPrelegent(Prelegent prelegent) {
+		this.prelegent = prelegent;
 	}
 
 	public Conference getConference() {

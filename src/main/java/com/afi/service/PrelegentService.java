@@ -5,26 +5,39 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.afi.model.Conference;
 import com.afi.model.Prelegent;
 import com.afi.repository.PrelegentRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @Service
 public class PrelegentService {
-	@Autowired
+	
+	@PersistenceContext
+    private EntityManager entityManager;
+	
 	private PrelegentRepository prelegentRepository;
 
-    public PrelegentService() {}
+	@Autowired
+    public PrelegentService(EntityManager entityManager, PrelegentRepository prelegentRepository) {
+		this.entityManager = entityManager;
+		this.prelegentRepository = prelegentRepository;
+	}
     
-    public Page<Prelegent> findAll(Pageable pageable){
-    	return prelegentRepository.findAll(pageable);
+    public Page<Prelegent> findAllByConference(Conference conference, Pageable pageable){
+    	return prelegentRepository.findAllByConferenceOrderById(conference, pageable);
     }
 
     public Prelegent findPrelegentByName(String name) {
         return prelegentRepository.findByName(name);
     }
     
-    public Prelegent updatePrelegent(Prelegent prelegent) {
-        return prelegentRepository.save(prelegent);
+    public Prelegent updatePrelegent(Prelegent prelegent, Conference conference) {
+    	prelegent.setConference(conference);
+    	Prelegent saved = prelegentRepository.save(prelegent);
+        return saved;
     }
     
     public void deletePrelegentById(long id) {

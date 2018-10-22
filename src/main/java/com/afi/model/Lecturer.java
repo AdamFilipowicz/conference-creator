@@ -14,12 +14,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "conf_prelegent")
-public class Prelegent {
+@Table(name = "conf_lecturer")
+public class Lecturer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "id_prelegent", updatable = false, nullable = false)
+	@Column(name = "id_lecturer", updatable = false, nullable = false)
 	private long id;
 
 	@NotNull
@@ -40,7 +40,7 @@ public class Prelegent {
 	@JoinColumn(name = "conference_id")
 	private Conference conference;
 
-	public Prelegent() {}
+	public Lecturer() {}
 	
 	public long getId() {
 		return id;
@@ -50,7 +50,7 @@ public class Prelegent {
 		this.id = id;
 	}
 	
-	public Prelegent(@NotNull @NotBlank String name, @NotNull @NotBlank String surname, int age,
+	public Lecturer(@NotNull @NotBlank String name, @NotNull @NotBlank String surname, int age,
 			@NotNull float averageGrade) {
 		this.name = name;
 		this.surname = surname;
@@ -81,7 +81,7 @@ public class Prelegent {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
 	public float getAverageGrade() {
 		return averageGrade;
 	}

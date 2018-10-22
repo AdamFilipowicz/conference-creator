@@ -17,7 +17,7 @@ public class ConferenceService {
     public ConferenceService() {}
     
     public Page<Conference> findAll(Pageable pageable){
-    	return conferenceRepository.findAll(pageable);
+    	return conferenceRepository.findAllByOrderById(pageable);
     }
 
     public Conference findConferenceByName(String name) {
@@ -25,6 +25,10 @@ public class ConferenceService {
     }
     
     public Conference updateConference(Conference conference) {
+    	Conference existing = conferenceRepository.findByName(conference.getName());
+    	if(existing != null && existing.getId() != conference.getId()) {
+    		return null;
+    	}
         return conferenceRepository.save(conference);
     }
     

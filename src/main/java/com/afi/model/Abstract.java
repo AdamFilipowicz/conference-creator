@@ -14,12 +14,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "conf_prelegent")
-public class Prelegent {
+@Table(name = "conf_abstract")
+public class Abstract {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "id_prelegent", updatable = false, nullable = false)
+	@Column(name = "id_abstract", updatable = false, nullable = false)
 	private long id;
 
 	@NotNull
@@ -28,19 +28,21 @@ public class Prelegent {
 	
 	@NotNull
 	@NotBlank
-	private String surname;
+	private String pdfPath;
 	
-	private int age;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "lecturer_id")
+	private Lecturer lecturer;
 	
-	@NotNull
-	@Column(name = "average_grade")
-	private float averageGrade;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@JoinColumn(name = "prelegent_id")
+	private Prelegent prelegent;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "conference_id")
 	private Conference conference;
 
-	public Prelegent() {}
+	public Abstract() {}
 	
 	public long getId() {
 		return id;
@@ -50,12 +52,9 @@ public class Prelegent {
 		this.id = id;
 	}
 	
-	public Prelegent(@NotNull @NotBlank String name, @NotNull @NotBlank String surname, int age,
-			@NotNull float averageGrade) {
+	public Abstract(@NotNull @NotBlank String name, @NotNull @NotBlank String pdfPath) {
 		this.name = name;
-		this.surname = surname;
-		this.age = age;
-		this.averageGrade = averageGrade;
+		this.pdfPath = pdfPath;
 	}
 
 	public String getName() {
@@ -66,35 +65,28 @@ public class Prelegent {
 		this.name = name;
 	}
 
-	public String getSurname() {
-		return surname;
+	public String getPdfPath() {
+		return pdfPath;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setPdfPath(String pdfPath) {
+		this.pdfPath = pdfPath;
 	}
 
-	public int getAge() {
-		return age;
+	public Lecturer getLecturer() {
+		return lecturer;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setLecturer(Lecturer lecturer) {
+		this.lecturer = lecturer;
 	}
 
-	public float getAverageGrade() {
-		return averageGrade;
+	public Prelegent getPrelegent() {
+		return prelegent;
 	}
 
-	public void setAverageGrade(float averageGrade) {
-		this.averageGrade = averageGrade;
+	public void setPrelegent(Prelegent prelegent) {
+		this.prelegent = prelegent;
 	}
-
-	public Conference getConference() {
-		return conference;
-	}
-
-	public void setConference(Conference conference) {
-		this.conference = conference;
-	}
+	
 }
