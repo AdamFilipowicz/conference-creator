@@ -49,6 +49,12 @@ public class Conference {
 	
 	@OneToMany(mappedBy = "conference", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
 	private List<Alarm> alarms = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "conference", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+	private List<Event> events = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "conference", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+	private List<Grade> grades = new ArrayList<>();
 
 	public Conference() {}
 

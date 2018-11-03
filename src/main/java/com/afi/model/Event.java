@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "conf_prelegent")
+@Table(name = "conf_event")
 public class Event {
 
 	@Id

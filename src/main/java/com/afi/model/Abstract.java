@@ -89,4 +89,12 @@ public class Abstract {
 		this.prelegent = prelegent;
 	}
 	
+	public Conference getConference() {
+		return conference;
+	}
+
+	public void setConference(Conference conference) {
+		this.conference = conference;
+	}
+	
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.afi.dto.TableConference;
 import com.afi.model.Conference;
+import com.afi.tools.DateTools;
+import com.afi.tools.TimeTools;
 
 @Component
 public class ConferenceMapper {
@@ -15,10 +17,10 @@ public class ConferenceMapper {
 		TableConference tableConference = new TableConference();
 		tableConference.setId(conference.getId());
 		tableConference.setName(conference.getName());
-		tableConference.setStartDate(formatDate(conference.getConferenceStart()));
-		tableConference.setStartTime(formatTime(conference.getConferenceStart()));
-		tableConference.setEndDate(formatDate(conference.getConferenceEnd()));
-		tableConference.setEndTime(formatTime(conference.getConferenceEnd()));
+		tableConference.setStartDate(DateTools.formatDate(conference.getConferenceStart()));
+		tableConference.setStartTime(TimeTools.formatTime(conference.getConferenceStart()));
+		tableConference.setEndDate(DateTools.formatDate(conference.getConferenceEnd()));
+		tableConference.setEndTime(TimeTools.formatTime(conference.getConferenceEnd()));
 		return tableConference;
 	}
 
@@ -35,19 +37,5 @@ public class ConferenceMapper {
 			System.out.println(e.getStackTrace());
 		}
 		return conference;
-	}
-
-	@SuppressWarnings("deprecation")
-	private String formatDate(Timestamp date) {
-		String month = (date.getMonth() + 1) >= 10 ? "" + (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
-		String day = (date.getDate()) >= 10 ? "" + (date.getDate()) : "0" + (date.getDate());
-		return (date.getYear() + 1900) + "-" + month + "-" + day;
-	}
-
-	@SuppressWarnings("deprecation")
-	private String formatTime(Timestamp time) {
-		String hours = (time.getHours()) >= 10 ? "" + time.getHours() : "0" + time.getHours();
-		String minutes = (time.getMinutes()) >= 10 ? "" + time.getMinutes() : "0" + (time.getMinutes());
-		return hours + ":" + minutes;
 	}
 }

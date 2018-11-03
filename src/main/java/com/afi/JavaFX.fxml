@@ -26,10 +26,11 @@
               <items>
                 <MenuItem fx:id="lecturerMenuPick" mnemonicParsing="false" onAction="#initializeLecturerTable" text="Lista wykładowców" />
                   <MenuItem fx:id="prelegentMenuPick" mnemonicParsing="false" onAction="#initializePrelegentTable" text="Lista prelegentów" />
-                  <MenuItem mnemonicParsing="false" text="Lista abstraktów" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializeAbstractTable" text="Lista abstraktów" />
                   <MenuItem mnemonicParsing="false" text="Galeria zdjęć" />
-                  <MenuItem mnemonicParsing="false" text="Lista alarmów" />
-                  <MenuItem mnemonicParsing="false" text="Lista wydarzeń" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializeAlarmTable" text="Lista alarmów" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializeEventTable" text="Lista wydarzeń" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializeGradeTable" text="Lista ocen" />
                   <MenuItem mnemonicParsing="false" text="Kontakt i mapa" />
               </items>
             </Menu>

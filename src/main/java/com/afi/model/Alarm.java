@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -22,6 +23,10 @@ public class Alarm {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id_alarm", updatable = false, nullable = false)
 	private long id;
+	
+	@NotNull
+	@NotBlank
+	private String name;
 
 	@NotNull
 	@Column(name = "alarm_time")
@@ -43,6 +48,14 @@ public class Alarm {
 	
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Alarm(@NotNull Timestamp alarmTime) {

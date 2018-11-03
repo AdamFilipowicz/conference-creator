@@ -17,9 +17,7 @@ import org.springframework.stereotype.Controller;
 
 import com.afi.data.TableData;
 import com.afi.data.TableMapObject;
-import com.afi.dto.TableConference;
-import com.afi.dto.TableLecturer;
-import com.afi.dto.TablePrelegent;
+import com.afi.dto.*;
 import com.afi.model.Conference;
 import com.afi.service.ConferenceService;
 import com.afi.service.NamingService;
@@ -148,6 +146,42 @@ public class JavaFXController implements Initializable {
 		}
 		refreshTable(pager.getCurrentPage());
 	}
+	
+	@SuppressWarnings("static-access")
+	@FXML
+	private void initializeAbstractTable(ActionEvent e) {
+		if(selectedConference == null) {
+			dialogs.showError("Błąd", "Wybierz konferencję");
+			return;
+		}
+		pickConferenceButton.setVisible(false);
+		if(e != null && !edited.isEmpty()) {
+			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
+			return;
+		}
+		infoTableText.setText("Edytuj abstrakty");
+		exampleObject = new TableAbstract();
+		tableDataMap = tableData.getAbstractMap();
+		setTable();
+	}
+	
+	@SuppressWarnings("static-access")
+	@FXML
+	private void initializeAlarmTable(ActionEvent e) {
+		if(selectedConference == null) {
+			dialogs.showError("Błąd", "Wybierz konferencję");
+			return;
+		}
+		pickConferenceButton.setVisible(false);
+		if(e != null && !edited.isEmpty()) {
+			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
+			return;
+		}
+		infoTableText.setText("Edytuj alarmy");
+		exampleObject = new TableAlarm();
+		tableDataMap = tableData.getAlarmMap();
+		setTable();
+	}
 
 	@SuppressWarnings("static-access")
 	@FXML
@@ -160,6 +194,42 @@ public class JavaFXController implements Initializable {
 		infoTableText.setText("Edytuj konferencje");
 		exampleObject = new TableConference();
 		tableDataMap = tableData.getConferenceMap();
+		setTable();
+	}
+	
+	@SuppressWarnings("static-access")
+	@FXML
+	private void initializeEventTable(ActionEvent e) {
+		if(selectedConference == null) {
+			dialogs.showError("Błąd", "Wybierz konferencję");
+			return;
+		}
+		pickConferenceButton.setVisible(false);
+		if(e != null && !edited.isEmpty()) {
+			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
+			return;
+		}
+		infoTableText.setText("Edytuj wydarzenia");
+		exampleObject = new TableEvent();
+		tableDataMap = tableData.getEventMap();
+		setTable();
+	}
+	
+	@SuppressWarnings("static-access")
+	@FXML
+	private void initializeGradeTable(ActionEvent e) {
+		if(selectedConference == null) {
+			dialogs.showError("Błąd", "Wybierz konferencję");
+			return;
+		}
+		pickConferenceButton.setVisible(false);
+		if(e != null && !edited.isEmpty()) {
+			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
+			return;
+		}
+		infoTableText.setText("Edytuj oceny");
+		exampleObject = new TableGrade();
+		tableDataMap = tableData.getGradeMap();
 		setTable();
 	}
 
@@ -199,6 +269,25 @@ public class JavaFXController implements Initializable {
 		setTable();
 	}
 	
+//	@SuppressWarnings("static-access")
+//	@FXML
+//	private void initializePhotos(ActionEvent e) {
+//		if(selectedConference == null) {
+//			dialogs.showError("Błąd", "Wybierz konferencję");
+//			return;
+//		}
+//		pickConferenceButton.setVisible(false);
+//		if(e != null && !edited.isEmpty()) {
+//			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
+//			return;
+//		}
+//		infoTableText.setText("Edytuj oceny");
+//		exampleObject = new TableGrade();
+//		tableDataMap = tableData.getGradeMap();
+//		setTable();
+//	}
+	
+	@SuppressWarnings("static-access")
 	@FXML
 	private void pickConference(ActionEvent e) {
 		if(mainTable.getSelectionModel().getSelectedItem() != null) {
@@ -209,7 +298,7 @@ public class JavaFXController implements Initializable {
 					try {
 						conferenceName = method.invoke(mainTable.getSelectionModel().getSelectedItem()).toString();
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						dialogs.showError("Błąd", "Zapisz najpierw konferencję");
 					}
 				}
 			}
