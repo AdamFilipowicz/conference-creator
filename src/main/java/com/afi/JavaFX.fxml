@@ -7,7 +7,9 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
@@ -19,39 +21,47 @@
       <menus>
       <Menu mnemonicParsing="false" text="Menu główne">
                <items>
-                  <MenuItem fx:id="conferenceMenuPick" mnemonicParsing="false" onAction="#initializeConferenceTable" text="Wybierz konferencję" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializeConferenceTable" text="Wybierz konferencję" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Zarządzanie konferencją">
               <items>
-                <MenuItem fx:id="lecturerMenuPick" mnemonicParsing="false" onAction="#initializeLecturerTable" text="Lista wykładowców" />
-                  <MenuItem fx:id="prelegentMenuPick" mnemonicParsing="false" onAction="#initializePrelegentTable" text="Lista prelegentów" />
+                <MenuItem mnemonicParsing="false" onAction="#initializeLecturerTable" text="Lista wykładowców" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializePrelegentTable" text="Lista prelegentów" />
                   <MenuItem mnemonicParsing="false" onAction="#initializeAbstractTable" text="Lista abstraktów" />
-                  <MenuItem mnemonicParsing="false" text="Galeria zdjęć" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializePhotos" text="Galeria zdjęć" />
                   <MenuItem mnemonicParsing="false" onAction="#initializeAlarmTable" text="Lista alarmów" />
                   <MenuItem mnemonicParsing="false" onAction="#initializeEventTable" text="Lista wydarzeń" />
                   <MenuItem mnemonicParsing="false" onAction="#initializeGradeTable" text="Lista ocen" />
-                  <MenuItem mnemonicParsing="false" text="Kontakt i mapa" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializeContact" text="Kontakt i mapa" />
               </items>
             </Menu>
       </menus>
     </MenuBar>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: grey;">
          <children>
-            <Label fx:id="infoTableText" layoutX="401.0" layoutY="14.0" text="Tekst informacyjny">
+            <Label fx:id="infoTableText" layoutX="402.0" layoutY="14.0" text="Tekst informacyjny">
                <font>
                   <Font size="24.0" />
                </font></Label>
             <AmbientLight color="CHARTREUSE" layoutX="318.0" layoutY="42.0" lightOn="true" />
-            <TableView fx:id="mainTable" editable="true" layoutX="27.0" layoutY="73.0" prefHeight="422.0" prefWidth="947.0" />
-            <Button fx:id="saveButton" layoutX="27.0" layoutY="508.0" mnemonicParsing="false" onAction="#saveTable" text="Zapisz" />
+            <TableView fx:id="mainTable" editable="true" layoutX="27.0" layoutY="73.0" prefHeight="422.0" prefWidth="947.0" visible="false" />
+            <Button fx:id="saveButton" layoutX="27.0" layoutY="508.0" mnemonicParsing="false" onAction="#saveTable" text="Zapisz" visible="false" />
             <GridPane fx:id="pageButtons" layoutX="99.0" layoutY="508.0" prefHeight="31.0" prefWidth="483.0">
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <Button fx:id="pickConferenceButton" layoutX="22.0" layoutY="16.0" mnemonicParsing="false" onAction="#pickConference" text="Wybierz konferencje" />
+            <Button fx:id="pickConferenceButton" layoutX="22.0" layoutY="16.0" mnemonicParsing="false" onAction="#pickConference" text="Wybierz konferencje" visible="false" />
             <Label fx:id="chosenConferenceLabel" layoutX="27.0" layoutY="49.0" text="Wybrana konferencja:" />
+            <AnchorPane fx:id="configPane" layoutX="105.0" layoutY="73.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="422.0" prefWidth="793.0" style="-fx-background-color: grey;" visible="false">
+               <children>
+                  <Label layoutX="70.0" layoutY="14.0" text="Ścieżka do plików na dysku" />
+                  <TextField fx:id="pathTextField" layoutX="21.0" layoutY="39.0" onKeyTyped="#setEdited" prefHeight="26.0" prefWidth="260.0" promptText="Wpisz ścieżkę" style="-fx-background-color: white;" />
+               </children>
+            </AnchorPane>
+            <Button fx:id="pickImagesButton" layoutX="22.0" layoutY="16.0" mnemonicParsing="false" onAction="#addPhotos" text="Wybierz zdjęcia" visible="false" />
+            <FlowPane fx:id="imagePane" layoutX="43.0" layoutY="75.0" prefHeight="449.0" prefWidth="917.0" />
          </children>
       </AnchorPane>
   </children>

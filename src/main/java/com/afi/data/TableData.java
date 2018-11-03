@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public final class TableData {
+	public static final String CONFERENCE_IMAGES = "conferenceImages";
+	
 	private static final Map<String, TableMapObject> abstractMap = new LinkedHashMap<String, TableMapObject>();
 	private static final Map<String, TableMapObject> alarmMap = new LinkedHashMap<String, TableMapObject>();
 	private static final Map<String, TableMapObject> conferenceMap = new LinkedHashMap<String, TableMapObject>();

@@ -1,7 +1,14 @@
 package com.afi;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,10 +26,13 @@ import com.afi.data.TableData;
 import com.afi.data.TableMapObject;
 import com.afi.dto.*;
 import com.afi.model.Conference;
+import com.afi.model.Config;
 import com.afi.service.ConferenceService;
+import com.afi.service.ConfigService;
 import com.afi.service.NamingService;
 import com.afi.tools.DatePickerCell;
 import com.afi.tools.FXDialogs;
+import com.afi.tools.ImageTools;
 import com.afi.tools.Pager;
 
 import javafx.collections.FXCollections;
@@ -36,12 +46,19 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 @Controller
@@ -52,6 +69,9 @@ public class JavaFXController implements Initializable {
 	
 	@Autowired
 	private ConferenceService conferenceService;
+	
+	@Autowired
+	private ConfigService configService;
 
 	@Autowired
 	private TableData tableData;
@@ -59,6 +79,9 @@ public class JavaFXController implements Initializable {
 	@Autowired
 	private FXDialogs dialogs;
 
+	@FXML
+	private AnchorPane configPane;
+	
 	@FXML
 	private VBox box;
 
@@ -70,6 +93,9 @@ public class JavaFXController implements Initializable {
 	
 	@FXML
 	private Button pickConferenceButton;
+	
+	@FXML
+	private Button pickImagesButton;
 
 	@FXML
 	private Label infoTableText;
@@ -79,6 +105,12 @@ public class JavaFXController implements Initializable {
 	
 	@FXML
 	private GridPane pageButtons;
+	
+	@FXML
+	private FlowPane imagePane;
+	
+	@FXML
+	private TextField pathTextField;
 
 	@SuppressWarnings("rawtypes")
 	private TableColumn tab;
@@ -92,6 +124,8 @@ public class JavaFXController implements Initializable {
 	private final Button firstPageButton = new Button("<-");
     private final Button lastPageButton = new Button("->");
     private Conference selectedConference;
+    private FileChooser fileChooser = new FileChooser();
+    private TilePane tile = new TilePane();
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -135,6 +169,17 @@ public class JavaFXController implements Initializable {
 	@SuppressWarnings("static-access")
 	@FXML
 	private void saveTable(ActionEvent e) {
+		if(exampleObject instanceof Config) {
+			if(!edited.add(-10)) {
+				list = new ArrayList<Object>();
+				list.add(pathTextField.getText());
+				configService.saveConfig(list, selectedConference);
+				edited.clear();
+				dialogs.showConfirm("Sukces", "Pomyślnie zmieniono konfigurację");
+			}
+			return;
+		}
+		edited.remove(-10);
 		for (Integer elementToChange : edited) {
 			if(checkRow(elementToChange)) {
 				String message = namingService.saveObject(list.get(elementToChange), selectedConference);
@@ -154,11 +199,11 @@ public class JavaFXController implements Initializable {
 			dialogs.showError("Błąd", "Wybierz konferencję");
 			return;
 		}
-		pickConferenceButton.setVisible(false);
 		if(e != null && !edited.isEmpty()) {
 			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
 			return;
 		}
+		setTableView();
 		infoTableText.setText("Edytuj abstrakty");
 		exampleObject = new TableAbstract();
 		tableDataMap = tableData.getAbstractMap();
@@ -172,11 +217,11 @@ public class JavaFXController implements Initializable {
 			dialogs.showError("Błąd", "Wybierz konferencję");
 			return;
 		}
-		pickConferenceButton.setVisible(false);
 		if(e != null && !edited.isEmpty()) {
 			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
 			return;
 		}
+		setTableView();
 		infoTableText.setText("Edytuj alarmy");
 		exampleObject = new TableAlarm();
 		tableDataMap = tableData.getAlarmMap();
@@ -186,11 +231,11 @@ public class JavaFXController implements Initializable {
 	@SuppressWarnings("static-access")
 	@FXML
 	private void initializeConferenceTable(ActionEvent e) {
-		pickConferenceButton.setVisible(true);
 		if(e != null && !edited.isEmpty()) {
 			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
 			return;
 		}
+		setConferenceView();
 		infoTableText.setText("Edytuj konferencje");
 		exampleObject = new TableConference();
 		tableDataMap = tableData.getConferenceMap();
@@ -204,11 +249,11 @@ public class JavaFXController implements Initializable {
 			dialogs.showError("Błąd", "Wybierz konferencję");
 			return;
 		}
-		pickConferenceButton.setVisible(false);
 		if(e != null && !edited.isEmpty()) {
 			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
 			return;
 		}
+		setTableView();
 		infoTableText.setText("Edytuj wydarzenia");
 		exampleObject = new TableEvent();
 		tableDataMap = tableData.getEventMap();
@@ -222,11 +267,11 @@ public class JavaFXController implements Initializable {
 			dialogs.showError("Błąd", "Wybierz konferencję");
 			return;
 		}
-		pickConferenceButton.setVisible(false);
 		if(e != null && !edited.isEmpty()) {
 			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
 			return;
 		}
+		setTableView();
 		infoTableText.setText("Edytuj oceny");
 		exampleObject = new TableGrade();
 		tableDataMap = tableData.getGradeMap();
@@ -240,11 +285,11 @@ public class JavaFXController implements Initializable {
 			dialogs.showError("Błąd", "Wybierz konferencję");
 			return;
 		}
-		pickConferenceButton.setVisible(false);
 		if(e != null && !edited.isEmpty()) {
 			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
 			return;
 		}
+		setTableView();
 		infoTableText.setText("Edytuj prelegentów");
 		exampleObject = new TablePrelegent();
 		tableDataMap = tableData.getPrelegentMap();
@@ -263,29 +308,45 @@ public class JavaFXController implements Initializable {
 			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
 			return;
 		}
+		setTableView();
 		infoTableText.setText("Edytuj wykładowców");
 		exampleObject = new TableLecturer();
 		tableDataMap = tableData.getLecturerMap();
 		setTable();
 	}
 	
-//	@SuppressWarnings("static-access")
-//	@FXML
-//	private void initializePhotos(ActionEvent e) {
-//		if(selectedConference == null) {
-//			dialogs.showError("Błąd", "Wybierz konferencję");
-//			return;
-//		}
-//		pickConferenceButton.setVisible(false);
-//		if(e != null && !edited.isEmpty()) {
-//			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
-//			return;
-//		}
-//		infoTableText.setText("Edytuj oceny");
-//		exampleObject = new TableGrade();
-//		tableDataMap = tableData.getGradeMap();
-//		setTable();
-//	}
+	@SuppressWarnings("static-access")
+	@FXML
+	private void initializePhotos(ActionEvent e) {
+		if(selectedConference == null) {
+			dialogs.showError("Błąd", "Wybierz konferencję");
+			return;
+		}
+		if(e != null && !edited.isEmpty()) {
+			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
+			return;
+		}
+		setImageView();
+		infoTableText.setText("Edytuj zdjęcia konferencji");
+		setImagePane();
+	}
+	
+	@SuppressWarnings("static-access")
+	@FXML
+	private void initializeContact(ActionEvent e) {
+		if(selectedConference == null) {
+			dialogs.showError("Błąd", "Wybierz konferencję");
+			return;
+		}
+		if(e != null && !edited.isEmpty()) {
+			dialogs.showError("Błąd", "Zapisz najpierw zmiany");
+			return;
+		}
+		setConfigView();
+		infoTableText.setText("Edytuj kontakt konferencji");
+		exampleObject = new Config();
+		setConfig();
+	}
 	
 	@SuppressWarnings("static-access")
 	@FXML
@@ -307,6 +368,31 @@ public class JavaFXController implements Initializable {
 				selectedConference = conferenceService.findConferenceByName(conferenceName);
 			}
 		}
+	}
+	
+	@FXML
+	private void setEdited(KeyEvent e){
+		edited.add(-10);
+	}
+	
+	@SuppressWarnings("static-access")
+	@FXML
+	private void addPhotos(ActionEvent e) {
+		ImageTools.setExtFilters(fileChooser);
+        List<File> files = fileChooser.showOpenMultipleDialog(null);
+        File parentFolder = new File(configService.findValueByKeyAndConference("image_path", selectedConference) + "\\" + tableData.CONFERENCE_IMAGES + "\\");
+        parentFolder.mkdirs();
+        for(File f: files) {
+    	    try {
+    	    	String[] spl = f.toString().replace("\\", "/").split("/");
+				Files.copy(f.toPath(), Paths.get(parentFolder.toString() + "\\" + spl[spl.length - 1]), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				dialogs.showError("Błąd", "Błąd dodawania zdjęć");
+				return;
+			}
+        }
+        dialogs.showConfirm("Sukces", "Pomyślnie dodano zdjęcia");
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -372,6 +458,12 @@ public class JavaFXController implements Initializable {
 		setTableItems();
 	}
 	
+	private void setConfig() {
+		edited.clear();
+		list = new ArrayList<Object>(configService.findConfig(selectedConference));
+		pathTextField.setText(list.get(0).toString());
+	}
+	
 	private void refreshTable(int page) {
 		edited.clear();
 		pager = namingService.findAll(exampleObject, pager, selectedConference, pageSize, buttonsToShow, PageRequest.of(page, pageSize));
@@ -413,6 +505,33 @@ public class JavaFXController implements Initializable {
 			}
 		}
 		return true;
+	}
+	
+	@SuppressWarnings("static-access")
+	private void setImagePane() {
+		File parentFolder = new File(configService.findValueByKeyAndConference("image_path", selectedConference) + "\\" + tableData.CONFERENCE_IMAGES + "\\");
+        File[] files = parentFolder.listFiles();
+
+        for (final File file : files) {
+            ImageView imageView;
+            imageView = ImageTools.createImageView(file);
+            tile.getChildren().addAll(imageView);
+        }
+        for(File f: files) {
+        	Image image;
+			try {
+				image = new Image(new FileInputStream(f), 500, 0, true, true);
+				ImageView imageView = new ImageView(image);
+				imagePane.getChildren().add(imageView);
+			} catch (FileNotFoundException e) {
+				dialogs.showError("Błąd", "Nie wczytano zdjęcia");
+			}
+//        	try {
+//				images.add(ImageIO.read(f));
+//			} catch (IOException e) {
+//				dialogs.showError("Błąd", "Nie wczytano zdjęcia");
+//			}
+        }
 	}
 	
 	@SuppressWarnings("static-access")
@@ -522,6 +641,42 @@ public class JavaFXController implements Initializable {
 			return false;
 		}
     	return true;
+    }
+    
+    private void setConferenceView() {
+    	mainTable.setVisible(true);
+		pickConferenceButton.setVisible(true);
+		saveButton.setVisible(true);
+		pickImagesButton.setVisible(false);
+		configPane.setVisible(false);
+		imagePane.setVisible(false);
+    }
+    
+    private void setTableView() {
+    	mainTable.setVisible(true);
+		pickConferenceButton.setVisible(false);
+		saveButton.setVisible(true);
+		pickImagesButton.setVisible(false);
+		configPane.setVisible(false);
+		imagePane.setVisible(false);
+    }
+    
+    private void setImageView() {
+    	mainTable.setVisible(false);
+		pickConferenceButton.setVisible(false);
+		saveButton.setVisible(false);
+		pickImagesButton.setVisible(true);
+		configPane.setVisible(false);
+		imagePane.setVisible(true);
+    }
+    
+    private void setConfigView() {
+    	mainTable.setVisible(false);
+		pickConferenceButton.setVisible(false);
+		saveButton.setVisible(true);
+		pickImagesButton.setVisible(false);
+		configPane.setVisible(true);
+		imagePane.setVisible(false);
     }
 
 	private double calculatePrefColumnWidth(int columnLength, int tableMapLength) {

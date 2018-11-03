@@ -13,30 +13,25 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "conf_grade")
-public class Grade {
+@Table(name = "conf_config")
+public class Config {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "id_grade", updatable = false, nullable = false)
+	@Column(name = "id_config", updatable = false, nullable = false)
 	private long id;
 	
 	@NotNull
-	private int grade;
+	private String key;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	@JoinColumn(name = "lecturer_id")
-	private Lecturer lecturer;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
-	@JoinColumn(name = "prelegent_id")
-	private Prelegent prelegent;
-	
+	@NotNull
+	private String value;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "conference_id")
 	private Conference conference;
 
-	public Grade() {}
+	public Config() {}
 	
 	public long getId() {
 		return id;
@@ -45,34 +40,26 @@ public class Grade {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public Grade(@NotNull int grade) {
-		super();
-		this.grade = grade;
-	}
 	
-	public int getGrade() {
-		return grade;
+	public Config(@NotNull String key, @NotNull String value) {
+		this.key = key;
+		this.value = value;
 	}
 
-	public void setGrade(int grade) {
-		this.grade = grade;
+	public String getKey() {
+		return key;
 	}
 
-	public Lecturer getLecturer() {
-		return lecturer;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
-	public void setLecturer(Lecturer lecturer) {
-		this.lecturer = lecturer;
+	public String getValue() {
+		return value;
 	}
 
-	public Prelegent getPrelegent() {
-		return prelegent;
-	}
-
-	public void setPrelegent(Prelegent prelegent) {
-		this.prelegent = prelegent;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public Conference getConference() {
