@@ -32,4 +32,8 @@ public class PrelegentMapper {
 		}
 		return prelegent;
 	}
+	
+	public String toStringList(Prelegent prelegent) {
+		return "p "+prelegent.getName()+" "+prelegent.getSurname();
+	}
 }

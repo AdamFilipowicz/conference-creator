@@ -7,7 +7,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public final class TableData {
-	public static final String CONFERENCE_IMAGES = "conferenceImages";
+	public static final String PATH = "C:\\kreator_konferencji\\nowa";
+	public static final String EMAIL = "example@ex.com";
+	public static final String PHONE = "+48 123 456 789";
+	
+	public static final String CONFERENCE_IMAGES = "zdjecia_konferencji";
+	
+	public static final String LOGO = "logo";
+	public static final String MAIN_PHOTO = "zdjecie";
+	
 	
 	private static final Map<String, TableMapObject> abstractMap = new LinkedHashMap<String, TableMapObject>();
 	private static final Map<String, TableMapObject> alarmMap = new LinkedHashMap<String, TableMapObject>();
@@ -20,10 +28,12 @@ public final class TableData {
     {
 		abstractMap.put("Nazwa*", data("name", 20, false, "text"));
 		abstractMap.put("Plik pdf*", data("pdfPath", 15, false, "pdffile"));
+		abstractMap.put("Wybór prelegenta/wykładowcy", data("prelegentLecturerName", 20, true, "lecturerPrelegent"));
 		
 		alarmMap.put("Nazwa*", data("name", 20, false, "text"));
 		alarmMap.put("Data alarmu*", data("date", 9, false, "data"));
 		alarmMap.put("Czas alarmu*", data("time", 9, false, "time"));
+		alarmMap.put("Wydarzenie", data("eventName", 15, true, "event"));
 		
 		conferenceMap.put("Nazwa konferencji*", data("name", 20, false, "text"));
 		conferenceMap.put("Data rozpoczęcia*", data("startDate", 9, false, "data"));

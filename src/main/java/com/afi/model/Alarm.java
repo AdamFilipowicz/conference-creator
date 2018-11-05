@@ -36,7 +36,7 @@ public class Alarm {
 	@JoinColumn(name = "conference_id")
 	private Conference conference;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "event_id")
 	private Event event;
 	

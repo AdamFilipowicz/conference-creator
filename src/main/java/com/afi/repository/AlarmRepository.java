@@ -20,5 +20,7 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long>, PagingAndSo
     
     Page<Alarm> findAllByConferenceOrderById(Conference conference, Pageable pageable);
     
+    List<Alarm> findAllByConferenceOrderById(Conference conference);
+    
     Alarm findByName(String name);
 }

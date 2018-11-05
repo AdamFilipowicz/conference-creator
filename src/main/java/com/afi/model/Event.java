@@ -1,6 +1,8 @@
 package com.afi.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -45,6 +48,9 @@ public class Event {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "conference_id")
 	private Conference conference;
+	
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+	private List<Alarm> alarms = new ArrayList<>();
 
 	public Event() {}
 	

@@ -20,5 +20,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, PagingAndSo
     
     Page<Event> findAllByConferenceOrderById(Conference conference, Pageable pageable);
     
+    List<Event> findAllByConferenceOrderById(Conference conference);
+    
     Event findByName(String name);
 }

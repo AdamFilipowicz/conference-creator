@@ -3,6 +3,7 @@ package com.afi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.afi.data.TableData;
 import com.afi.model.Conference;
 import com.afi.model.Config;
 import com.afi.repository.ConfigRepository;
@@ -15,8 +16,6 @@ import javax.persistence.PersistenceContext;
 
 @Service
 public class ConfigService {
-	
-	private static final String PATH = "C:\\kreator_konferencji\\nowa";
 	
 	@PersistenceContext
     private EntityManager entityManager;
@@ -32,11 +31,19 @@ public class ConfigService {
 	public List<String> findConfig(Conference conference){
 		List<String> list = new ArrayList<String>();
 		list.add(findValueByKeyAndConference("image_path", conference));
+		list.add(findValueByKeyAndConference("logo", conference));
+		list.add(findValueByKeyAndConference("main_photo", conference));
+		list.add(findValueByKeyAndConference("email", conference));
+		list.add(findValueByKeyAndConference("phone", conference));
 		return list;
 	}
 	
 	public void saveConfig(List<Object> config, Conference conference) {
 		updateValueByKeyAndConference("image_path", config.get(0).toString(), conference);
+		updateValueByKeyAndConference("logo", config.get(1).toString(), conference);
+		updateValueByKeyAndConference("main_photo", config.get(2).toString(), conference);
+		updateValueByKeyAndConference("email", config.get(3).toString(), conference);
+		updateValueByKeyAndConference("phone", config.get(4).toString(), conference);
 	}
     
     public Config updateConfig(Config config, Conference conference) {
@@ -74,7 +81,19 @@ public class ConfigService {
     
     private String getDefault(String key) {
     	if(key == "image_path") {
-    		return PATH;
+    		return TableData.PATH;
+    	}
+    	else if(key == "logo") {
+    		return "";
+    	}
+    	else if(key == "main_photo") {
+    		return "";
+    	}
+    	else if(key == "email") {
+    		return TableData.EMAIL;
+    	}
+    	else if(key == "phone") {
+    		return TableData.PHONE;
     	}
     	return "";
     }

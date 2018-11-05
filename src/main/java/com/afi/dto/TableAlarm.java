@@ -5,6 +5,7 @@ public class TableAlarm {
 	private String name;
 	private String date;
 	private String time;
+	private String eventName;
 	
 	public long getId() {
 		return id;
@@ -29,5 +30,11 @@ public class TableAlarm {
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public String getEventName() {
+		return eventName;
+	}
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
 	}
 }

@@ -9,6 +9,8 @@ import com.afi.model.Conference;
 import com.afi.model.Event;
 import com.afi.repository.EventRepository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -28,6 +30,10 @@ public class EventService {
     
     public Page<Event> findAllByConference(Conference conference, Pageable pageable){
     	return eventRepository.findAllByConferenceOrderById(conference, pageable);
+    }
+    
+    public List<Event> findAllByConference(Conference conference){
+    	return eventRepository.findAllByConferenceOrderById(conference);
     }
 
     public Event findEventByName(String name) {

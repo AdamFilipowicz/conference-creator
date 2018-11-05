@@ -9,6 +9,8 @@ import com.afi.model.Conference;
 import com.afi.model.Lecturer;
 import com.afi.repository.LecturerRepository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -29,9 +31,13 @@ public class LecturerService {
     public Page<Lecturer> findAllByConference(Conference conference, Pageable pageable){
     	return lecturerRepository.findAllByConferenceOrderById(conference, pageable);
     }
+    
+    public List<Lecturer> findAllByConference(Conference conference){
+    	return lecturerRepository.findAllByConferenceOrderById(conference);
+    }
 
-    public Lecturer findLecturerByName(String name) {
-        return lecturerRepository.findByName(name);
+    public Lecturer findLecturerByNameAndSurname(String name, String surname) {
+        return lecturerRepository.findByNameAndSurname(name, surname);
     }
     
     public Lecturer updateLecturer(Lecturer lecturer, Conference conference) {

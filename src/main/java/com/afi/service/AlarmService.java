@@ -9,6 +9,8 @@ import com.afi.model.Conference;
 import com.afi.model.Alarm;
 import com.afi.repository.AlarmRepository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -28,6 +30,10 @@ public class AlarmService {
     
     public Page<Alarm> findAllByConference(Conference conference, Pageable pageable){
     	return alarmRepository.findAllByConferenceOrderById(conference, pageable);
+    }
+    
+    public List<Alarm> findAllByConference(Conference conference){
+    	return alarmRepository.findAllByConferenceOrderById(conference);
     }
 
     public Alarm findAlarmByName(String name) {

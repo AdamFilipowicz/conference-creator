@@ -43,4 +43,8 @@ public class EventMapper {
 		}
 		return event;
 	}
+	
+	public String toStringList(Event event) {
+		return event.getName();
+	}
 }

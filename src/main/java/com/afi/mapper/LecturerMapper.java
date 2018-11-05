@@ -32,4 +32,8 @@ public class LecturerMapper {
 		}
 		return lecturer;
 	}
+	
+	public String toStringList(Lecturer lecturer) {
+		return "w "+lecturer.getName()+" "+lecturer.getSurname();
+	}
 }

@@ -1,4 +1,4 @@
-package com.afi.tools;
+package com.afi.tools.pickers;
 
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;

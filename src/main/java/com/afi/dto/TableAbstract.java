@@ -4,6 +4,7 @@ public class TableAbstract {
 	private long id;
 	private String name;
 	private String pdfPath;
+	private String prelegentLecturerName;
 	
 	public long getId() {
 		return id;
@@ -22,5 +23,11 @@ public class TableAbstract {
 	}
 	public void setPdfPath(String pdfPath) {
 		this.pdfPath = pdfPath;
+	}
+	public String getPrelegentLecturerName() {
+		return prelegentLecturerName;
+	}
+	public void setPrelegentLecturerName(String prelegentLecturerName) {
+		this.prelegentLecturerName = prelegentLecturerName;
 	}
 }

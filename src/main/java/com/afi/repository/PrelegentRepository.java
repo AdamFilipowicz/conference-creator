@@ -20,5 +20,7 @@ public interface PrelegentRepository extends JpaRepository<Prelegent, Long>, Pag
     
     Page<Prelegent> findAllByConferenceOrderById(Conference conference, Pageable pageable);
     
-    Prelegent findByName(String name);
+    List<Prelegent> findAllByConferenceOrderById(Conference conference);
+    
+    Prelegent findByNameAndSurname(String name, String surname);
 }

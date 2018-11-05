@@ -20,5 +20,7 @@ public interface LecturerRepository extends JpaRepository<Lecturer, Long>, Pagin
     
     Page<Lecturer> findAllByConferenceOrderById(Conference conference, Pageable pageable);
     
-    Lecturer findByName(String name);
+    List<Lecturer> findAllByConferenceOrderById(Conference conference);
+    
+    Lecturer findByNameAndSurname(String name, String surname);
 }
