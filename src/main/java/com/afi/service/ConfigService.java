@@ -35,6 +35,9 @@ public class ConfigService {
 		list.add(findValueByKeyAndConference("main_photo", conference));
 		list.add(findValueByKeyAndConference("email", conference));
 		list.add(findValueByKeyAndConference("phone", conference));
+		list.add(findValueByKeyAndConference("address1", conference));
+		list.add(findValueByKeyAndConference("address2", conference));
+		list.add(findValueByKeyAndConference("map", conference));
 		return list;
 	}
 	
@@ -44,6 +47,9 @@ public class ConfigService {
 		updateValueByKeyAndConference("main_photo", config.get(2).toString(), conference);
 		updateValueByKeyAndConference("email", config.get(3).toString(), conference);
 		updateValueByKeyAndConference("phone", config.get(4).toString(), conference);
+		updateValueByKeyAndConference("address1", config.get(5).toString(), conference);
+		updateValueByKeyAndConference("address2", config.get(6).toString(), conference);
+		updateValueByKeyAndConference("map", config.get(7).toString(), conference);
 	}
     
     public Config updateConfig(Config config, Conference conference) {
@@ -94,6 +100,15 @@ public class ConfigService {
     	}
     	else if(key == "phone") {
     		return TableData.PHONE;
+    	}
+    	else if(key == "address1") {
+    		return TableData.ADDRESS1;
+    	}
+    	else if(key == "address2") {
+    		return TableData.ADDRESS2;
+    	}
+    	else if(key == "map") {
+    		return TableData.MAP;
     	}
     	return "";
     }

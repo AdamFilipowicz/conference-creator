@@ -6,6 +6,7 @@ public class TableEvent {
 	private String type;
 	private String date;
 	private String time;
+	private String prelegentLecturerName;
 	
 	public long getId() {
 		return id;
@@ -36,5 +37,11 @@ public class TableEvent {
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public String getPrelegentLecturerName() {
+		return prelegentLecturerName;
+	}
+	public void setPrelegentLecturerName(String prelegentLecturerName) {
+		this.prelegentLecturerName = prelegentLecturerName;
 	}
 }

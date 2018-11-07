@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.lynden.gmapsfx.GoogleMapView?>
 <?import javafx.scene.AmbientLight?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -8,6 +9,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,20 +23,10 @@
   <children>
     <MenuBar prefHeight="0.0" prefWidth="640.0" VBox.vgrow="NEVER">
       <menus>
-      <Menu mnemonicParsing="false" text="Menu główne">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#initializeConferenceTable" text="Wybierz konferencję" />
-               </items>
-            </Menu>
             <Menu mnemonicParsing="false" text="Zarządzanie konferencją">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#initializeLecturerTable" text="Lista wykładowców" />
-                  <MenuItem mnemonicParsing="false" onAction="#initializePrelegentTable" text="Lista prelegentów" />
-                  <MenuItem mnemonicParsing="false" onAction="#initializeAbstractTable" text="Lista abstraktów" />
+                  <MenuItem mnemonicParsing="false" onAction="#initializeConferenceTable" text="Edycja konferencji" />
                   <MenuItem mnemonicParsing="false" onAction="#initializePhotos" text="Galeria zdjęć" />
-                  <MenuItem mnemonicParsing="false" onAction="#initializeAlarmTable" text="Lista alarmów" />
-                  <MenuItem mnemonicParsing="false" onAction="#initializeEventTable" text="Lista wydarzeń" />
-                  <MenuItem mnemonicParsing="false" onAction="#initializeGradeTable" text="Lista ocen" />
                   <MenuItem mnemonicParsing="false" onAction="#initializeContact" text="Kontakt i mapa" />
               </items>
             </Menu>
@@ -46,8 +39,8 @@
                   <Font size="24.0" />
                </font></Label>
             <AmbientLight color="CHARTREUSE" layoutX="318.0" layoutY="42.0" lightOn="true" />
-            <TableView fx:id="mainTable" editable="true" layoutX="27.0" layoutY="73.0" prefHeight="422.0" prefWidth="947.0" visible="false" />
-            <Button fx:id="saveButton" layoutX="27.0" layoutY="508.0" mnemonicParsing="false" onAction="#saveTable" text="Zapisz" visible="false" />
+            <TableView fx:id="mainTable" editable="true" layoutX="25.0" layoutY="108.0" prefHeight="422.0" prefWidth="947.0" visible="false" />
+            <Button fx:id="saveButton" layoutX="25.0" layoutY="539.0" mnemonicParsing="false" onAction="#saveTable" text="Zapisz" visible="false" />
             <GridPane fx:id="pageButtons" layoutX="99.0" layoutY="508.0" prefHeight="31.0" prefWidth="483.0">
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -73,10 +66,15 @@
                      </cursor>
                   </TextField>
                   <Button fx:id="pickPhotoButton" layoutX="111.0" layoutY="243.0" mnemonicParsing="false" onAction="#addMainPhoto" prefHeight="32.0" prefWidth="129.0" text="Wybierz zdjęcie" />
-                  <Label layoutX="123.0" layoutY="284.0" text="Email kontaktowy" />
-                  <TextField fx:id="emailTextField" layoutX="22.0" layoutY="309.0" onKeyTyped="#setEdited" prefHeight="26.0" prefWidth="309.0" promptText="Wpisz ścieżkę" style="-fx-background-color: white;" />
-                  <Label layoutX="115.0" layoutY="345.0" text="Kontakt telefoniczny" />
-                  <TextField fx:id="phoneTextField" layoutX="21.0" layoutY="370.0" onKeyTyped="#setEdited" prefHeight="26.0" prefWidth="309.0" promptText="Wpisz ścieżkę" style="-fx-background-color: white;" />
+                  <Label layoutX="37.0" layoutY="284.0" text="Email kontaktowy" />
+                  <TextField fx:id="emailTextField" layoutX="22.0" layoutY="309.0" onKeyTyped="#setEdited" prefHeight="26.0" prefWidth="136.0" promptText="Wpisz email" style="-fx-background-color: white;" />
+                  <Label layoutX="29.0" layoutY="346.0" text="Kontakt telefoniczny" />
+                  <TextField fx:id="phoneTextField" layoutX="21.0" layoutY="370.0" onKeyTyped="#setEdited" prefHeight="26.0" prefWidth="136.0" promptText="Wpisz numer" style="-fx-background-color: white;" />
+                  <GoogleMapView fx:id="googleMapView" layoutX="350.0" layoutY="-5.0" prefHeight="429.0" prefWidth="495.0" />
+                  <Label layoutX="217.0" layoutY="284.0" text="Adres 1" />
+                  <TextField fx:id="address1TextField" layoutX="173.0" layoutY="309.0" onKeyTyped="#setEdited" prefHeight="26.0" prefWidth="136.0" promptText="Wpisz ulicę" style="-fx-background-color: white;" />
+                  <Label layoutX="217.0" layoutY="346.0" text="Adres 2" />
+                  <TextField fx:id="address2TextField" layoutX="172.0" layoutY="370.0" onKeyTyped="#setEdited" prefHeight="26.0" prefWidth="136.0" promptText="Wpisz miasto i kod pocztowy" style="-fx-background-color: white;" />
                </children>
             </AnchorPane>
             <Button fx:id="pickImagesButton" layoutX="22.0" layoutY="16.0" mnemonicParsing="false" onAction="#addPhotos" text="Wybierz zdjęcia" visible="false" />
@@ -85,6 +83,17 @@
                   <VBox fx:id="verticalImages" prefHeight="500.0" prefWidth="987.0" />
                </content>
             </ScrollPane>
+            <TabPane fx:id="tabPane" layoutX="25.0" layoutY="73.0" prefHeight="35.0" prefWidth="947.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+              <tabs>
+                <Tab fx:id="conferenceTab" onSelectionChanged="#initializeConferenceTable" text="Konferencje" />
+                <Tab onSelectionChanged="#initializeLecturerTable" text="Wykładowcy" />
+                  <Tab onSelectionChanged="#initializePrelegentTable" text="Prelegenci" />
+                  <Tab onSelectionChanged="#initializeAbstractTable" text="Abstrakty" />
+                  <Tab onSelectionChanged="#initializeAlarmTable" text="Alarmy" />
+                  <Tab onSelectionChanged="#initializeEventTable" text="Wydarzenia" />
+                  <Tab onSelectionChanged="#initializeGradeTable" text="Oceny" />
+              </tabs>
+            </TabPane>
          </children>
       </AnchorPane>
   </children>

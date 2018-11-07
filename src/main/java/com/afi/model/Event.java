@@ -37,11 +37,11 @@ public class Event {
 	@Column(name = "event_time")
 	private Timestamp eventTime;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "lecturer_id")
 	private Lecturer lecturer;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "prelegent_id")
 	private Prelegent prelegent;
 	

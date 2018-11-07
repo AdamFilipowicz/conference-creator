@@ -24,11 +24,11 @@ public class Grade {
 	@NotNull
 	private int grade;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "lecturer_id")
 	private Lecturer lecturer;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "prelegent_id")
 	private Prelegent prelegent;
 	

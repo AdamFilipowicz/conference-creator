@@ -44,8 +44,14 @@ public class Prelegent {
 	@JoinColumn(name = "conference_id")
 	private Conference conference;
 	
-	@OneToMany(mappedBy = "conference", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+	@OneToMany(mappedBy = "prelegent", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
 	private List<Abstract> abstracts = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "prelegent", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+	private List<Event> events = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "prelegent", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+	private List<Grade> grades = new ArrayList<>();
 
 	public Prelegent() {}
 	

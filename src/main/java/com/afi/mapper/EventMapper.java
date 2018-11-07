@@ -3,15 +3,23 @@ package com.afi.mapper;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.afi.dto.TableEvent;
 import com.afi.model.Event;
+import com.afi.service.LecturerService;
+import com.afi.service.PrelegentService;
 import com.afi.tools.DateTools;
 import com.afi.tools.TimeTools;
 
 @Component
 public class EventMapper {
+	
+	@Autowired
+	private PrelegentService prelegentService;
+	@Autowired
+	private LecturerService lecturerService;
 
 	public TableEvent toTableEvent(Event event) {
 		TableEvent tableEvent = new TableEvent();
@@ -25,6 +33,12 @@ public class EventMapper {
 		}
 		tableEvent.setDate(DateTools.formatDate(event.getEventTime()));
 		tableEvent.setTime(TimeTools.formatTime(event.getEventTime()));
+		if(event.getLecturer() != null) {
+			tableEvent.setPrelegentLecturerName("w "+event.getLecturer().getName()+" "+event.getLecturer().getSurname());
+		}
+		else if(event.getPrelegent() != null) {
+			tableEvent.setPrelegentLecturerName("p "+event.getPrelegent().getName()+" "+event.getPrelegent().getSurname());
+		}
 		return tableEvent;
 	}
 	
@@ -40,6 +54,17 @@ public class EventMapper {
 					.parse(tableEvent.getDate() + " " + tableEvent.getTime())).getTime()));
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
+		}
+		if(tableEvent.getPrelegentLecturerName() != null && !"".equals(tableEvent.getPrelegentLecturerName())) {
+			String[] splitedPrelegentLecturer = tableEvent.getPrelegentLecturerName().split(" ");
+			if("p".equals(splitedPrelegentLecturer[0])) {
+				event.setLecturer(null);
+				event.setPrelegent(prelegentService.findPrelegentByNameAndSurname(splitedPrelegentLecturer[1], splitedPrelegentLecturer[2]));
+			}
+			else if("w".equals(splitedPrelegentLecturer[0])) {
+				event.setPrelegent(null);
+				event.setLecturer(lecturerService.findLecturerByNameAndSurname(splitedPrelegentLecturer[1], splitedPrelegentLecturer[2]));				
+			}
 		}
 		return event;
 	}

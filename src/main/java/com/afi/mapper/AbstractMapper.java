@@ -41,7 +41,7 @@ public class AbstractMapper {
 				abstractt.setLecturer(null);
 				abstractt.setPrelegent(prelegentService.findPrelegentByNameAndSurname(splitedPrelegentLecturer[1], splitedPrelegentLecturer[2]));
 			}
-			else if("l".equals(splitedPrelegentLecturer[0])) {
+			else if("w".equals(splitedPrelegentLecturer[0])) {
 				abstractt.setPrelegent(null);
 				abstractt.setLecturer(lecturerService.findLecturerByNameAndSurname(splitedPrelegentLecturer[1], splitedPrelegentLecturer[2]));				
 			}
