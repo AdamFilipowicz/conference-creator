@@ -131,4 +131,8 @@ public class NonFXController {
 		}
 		return true;
 	}
+	
+	public Conference getSelectedConference() {
+		return selectedConference;
+	}
 }
